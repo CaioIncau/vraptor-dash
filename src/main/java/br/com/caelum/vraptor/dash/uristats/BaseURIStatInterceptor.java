@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Objects;
+
 import br.com.caelum.vraptor.Accepts;
 import br.com.caelum.vraptor.AroundCall;
 import br.com.caelum.vraptor.Intercepts;
@@ -98,13 +100,17 @@ public class BaseURIStatInterceptor {
 			Stat stat = new Stat(key, request.getRequestURI(), queryString, time,
 					request.getMethod(), resource, methodName,
 					etag, status, hadEtag,
-					cacheControl, size);
+					cacheControl, size,extractIpAddress());
 			
 			saveStat(stat);
 			
 		} catch (Exception ex) {
 			LOG.error("Unable to prepare stat to save:", ex);
 		}
+	}
+
+	private String extractIpAddress() {
+		return Objects.firstNonNull(request.getHeader("X-FORWARDED-FOR"), request.getRemoteAddr());
 	}
 
 	private String extractQueryString(String method) {

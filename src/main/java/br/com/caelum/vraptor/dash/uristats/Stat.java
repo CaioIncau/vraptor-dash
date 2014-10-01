@@ -51,11 +51,13 @@ public class Stat {
 
 	private final long size;
 
+	private final String ip;
+
 	Stat() {
-		this("", "", "",  0, "", "", "", "",0 , "unknown", "", 0);
+		this("", "", "",  0, "", "", "", "",0 , "unknown", "", 0, "");
 	}
 
-	public Stat(String userId, String uri, String queryString, long time, String verb, String resource, String action, String etag, int resultCode, String hadEtag, String cache, long size) {
+	public Stat(String userId, String uri, String queryString, long time, String verb, String resource, String action, String etag, int resultCode, String hadEtag, String cache, long size,String ip) {
 		this.userId = userId;
 		this.uri = uri;
 		this.queryString = queryString;
@@ -69,15 +71,16 @@ public class Stat {
 		this.resource = resource;
 		this.method = action;
 		this.etag = etag;
+		this.ip = ip;
 	}
 
 	private static final Logger LOG = LoggerFactory.getLogger(Stat.class);
 
 	public void log() {
 		if("GET".equalsIgnoreCase(verb)) {
-			LOG.info(String.format("%tc-[%s]-%s-%s-%s-%d-%s-%d-[%s]-%d-[%s]-%s-%s", createdAt,etag, verb, resource, method, time, hadEtag, resultCode, cache, size, userId, uri, queryString));
+			LOG.info(String.format("%tc-[%s]-%s-%s-%s-%d-%s-%d-[%s]-%d-[%s]-%s-%s", createdAt,ip, verb, resource, method, time, hadEtag, resultCode, cache, size, userId, uri, queryString));
 		}else{
-			LOG.info(String.format("%tc-[%s]-%s-%s-%s-%d-%s-%d-[%s]-%d-[%s]-%s", createdAt,etag, verb, resource, method, time, hadEtag, resultCode, cache, size, userId, uri));
+			LOG.info(String.format("%tc-[%s]-%s-%s-%s-%d-%s-%d-[%s]-%d-[%s]-%s", createdAt,ip, verb, resource, method, time, hadEtag, resultCode, cache, size, userId, uri));
 		}
 	}
 }
